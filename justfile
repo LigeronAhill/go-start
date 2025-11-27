@@ -10,9 +10,9 @@ main_path := "cmd/app/main.go"
 
 # Основные задачи
 
-# Установка зависимостей
+# Список команд
 default:
-    go mod tidy
+    @just --list
 
 # Запуск приложения
 run:
@@ -39,6 +39,10 @@ test-race:
 bench:
     go test -bench=. ./...
 
+# Бенчмарки с профилированием
+bench-mem:
+    go test -bench=. -benchmem ./...
+
 # Покрытие кода тестами
 coverage:
     go test -coverprofile=coverage.out ./...
@@ -62,11 +66,12 @@ lint:
 
 # Установка зависимостей для разработки
 dev-deps:
+    go mod tidy
     go install github.com/air-verse/air@latest
     air init
 
 # Запуск с hot-reload (air)
-air:
+watch:
     air
 
 # Полная проверка перед коммитом
@@ -74,5 +79,4 @@ pre-commit: lint test-race
 
 # Показать помощь
 help:
-    @echo "Available commands:"
     @just --list
